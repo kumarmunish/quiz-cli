@@ -9,6 +9,17 @@ import (
 	"time"
 )
 
+
+type problem struct {
+	question string
+	answer   string
+}
+
+func exit(msg string) {
+	fmt.Println(msg)
+	os.Exit(1)
+}
+
 func main() {
 	filename := flag.String("csv", "problems.csv", "problem file in 'question,answer' format")
 	timeLimit := flag.Int("time", 30, "time limit for the quiz in seconds")
@@ -20,7 +31,7 @@ func main() {
 	}
 	lines, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		exit("Failed to parse the SV file")
+		exit("Failed to parse the CSV file")
 	}
 	problems := parseLines(lines)
 	askQuestions(problems, *timeLimit)
@@ -64,12 +75,3 @@ func askQuestions(problems []problem, timeLimit int) {
 	fmt.Printf("\nYou scored %d out of %d\n", correct, len(problems))
 }
 
-type problem struct {
-	question string
-	answer   string
-}
-
-func exit(msg string) {
-	fmt.Println(msg)
-	os.Exit(1)
-}
